@@ -1,0 +1,20 @@
+<resources>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZHJvbmVsaW5rIiwiYSI6ImNqcHdvZm12NjE0bTQ0OXBjcHV2bGZmYWYifQ.zpJXSjHjzV_w2reksB6Q7A</string>
+    <string name="MissionDisengageReason_user_disengaged">Mission Paused</string>
+    <string name="Dashboard_dismiss">Dismiss</string>
+    <string name="Dashboard_start_countdown">Starting in</string>
+    <string name="Dashboard_start_engaging">Preparing to execute...</string>
+    <string name="Dashboard_start_cancelled">Countdown Stopped</string>
+    <string name="Dashboard_distance_prefix">D</string>
+    <string name="Dashboard_distance_suffix_imperial">ft</string>
+    <string name="Dashboard_distance_suffix_metric">m</string>
+    <string name="Dashboard_altitude_prefix">A</string>
+    <string name="Dashboard_horizontalSpeed_prefix">H/S</string>
+    <string name="Dashboard_horizontalSpeed_suffix_imperial">mph</string>
+    <string name="Dashboard_horizontalSpeed_suffix_metric">km/h</string>
+    <string name="Dashboard_verticalSpeed_prefix">V/S</string>
+    <string name="Dashboard_verticalSpeed_suffix_imperial">fps</string>
+    <string name="Dashboard_verticalSpeed_suffix_metric">m/s</string>
+    <string name="Dashboard_start_engage_droneSerialNumberUnavailable_title">Unidentified Drone</string>
+    <string name="Dashboard_start_engage_droneSerialNumberUnavailable_message">Unable to determine the serial number of your drone. Try reconnecting or power-cycling.</string>
+</resources>

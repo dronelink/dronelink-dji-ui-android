@@ -1,0 +1,3 @@
+include ':dronelink_dji_ui'
+rootProject.name='DronelinkDJIUI'
+
