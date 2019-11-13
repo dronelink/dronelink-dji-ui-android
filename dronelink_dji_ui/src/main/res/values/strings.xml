@@ -1,5 +1,4 @@
 <resources>
-    <string name="mapbox_access_token">pk.eyJ1IjoiZHJvbmVsaW5rIiwiYSI6ImNqcHdvZm12NjE0bTQ0OXBjcHV2bGZmYWYifQ.zpJXSjHjzV_w2reksB6Q7A</string>
     <string name="MissionDisengageReason_user_disengaged">Mission Paused</string>
     <string name="Dashboard_dismiss">Dismiss</string>
     <string name="Dashboard_start_countdown">Starting in</string>
