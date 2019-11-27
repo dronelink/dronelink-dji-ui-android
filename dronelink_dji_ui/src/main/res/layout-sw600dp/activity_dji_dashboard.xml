@@ -41,59 +41,15 @@
         custom:layout_constraintHorizontal_bias="0.5"
         custom:layout_constraintStart_toStartOf="parent" />
 
-    <View
-        android:id="@+id/telemetryView"
+    <fragment
+        class="com.dronelink.core.ui.TelemetryFragment"
+        android:id="@+id/telemetryFragment"
         android:layout_width="240dp"
         android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         custom:layout_constraintStart_toEndOf="@+id/mapFragment"
-        custom:layout_constraintBottom_toBottomOf="@+id/mapFragment"
-        android:background="@color/black_transparent" />
-
-    <TextView
-        android:id="@+id/distanceTextView"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        custom:layout_constraintStart_toStartOf="@+id/telemetryView"
-        custom:layout_constraintTop_toTopOf="@+id/telemetryView" />
-
-    <TextView
-        android:id="@+id/altitudeTextView"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        custom:layout_constraintTop_toTopOf="@+id/distanceTextView"
-        custom:layout_constraintStart_toEndOf="@+id/distanceTextView" />
-
-    <TextView
-        android:id="@+id/horizontalSpeedTextView"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="2dp"
-        custom:layout_constraintTop_toBottomOf="@+id/distanceTextView"
-        custom:layout_constraintStart_toStartOf="@+id/distanceTextView" />
-
-    <TextView
-        android:id="@+id/verticalSpeedTextView"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        custom:layout_constraintTop_toTopOf="@+id/horizontalSpeedTextView"
-        custom:layout_constraintStart_toEndOf="@+id/horizontalSpeedTextView" />
+        custom:layout_constraintBottom_toBottomOf="@+id/mapFragment" />
 
     <fragment
         class="com.dronelink.core.ui.MissionFragment"
