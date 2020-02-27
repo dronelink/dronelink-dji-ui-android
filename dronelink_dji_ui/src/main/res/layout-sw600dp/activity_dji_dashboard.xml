@@ -61,6 +61,15 @@
         custom:layout_constraintStart_toStartOf="@+id/mapFragment"
         custom:layout_constraintEnd_toEndOf="@+id/mapFragment" />
 
+    <fragment
+        class="com.dronelink.core.ui.FuncFragment"
+        android:id="@+id/funcFragment"
+        android:layout_marginTop="36dp"
+        android:layout_width="350dp"
+        android:layout_height="165dp"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:layout_constraintStart_toStartOf="@+id/mapFragment" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"

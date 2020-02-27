@@ -67,6 +67,15 @@
         custom:layout_constraintTop_toTopOf="parent"
         custom:layout_constraintStart_toStartOf="@+id/mapFragment" />
 
+    <fragment
+        class="com.dronelink.core.ui.FuncFragment"
+        android:id="@+id/funcFragment"
+        android:layout_marginTop="76dp"
+        android:layout_width="310dp"
+        android:layout_height="165dp"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:layout_constraintStart_toStartOf="@+id/mapFragment" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
