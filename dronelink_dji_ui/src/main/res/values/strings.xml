@@ -1,2 +1,6 @@
 <resources>
+    <string name="DJIDashboardActivity_dismiss">Dismiss</string>
+    <string name="DJIDashboardActivity_camera_noSDCard_title">SD Card Missing</string>
+    <string name="DJIDashboardActivity_camera_noSDCard_details">Please make sure to insert an SD card before running a mission with data capture.</string>
+    <string name="DJIDashboardActivity_loading_mission">Loading mission...</string>
 </resources>
