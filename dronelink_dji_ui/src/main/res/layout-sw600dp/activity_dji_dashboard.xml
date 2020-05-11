@@ -9,26 +9,32 @@
     tools:context=".DJIDashboardActivity">
 
     <RelativeLayout
+        android:id="@+id/primaryView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- Widget to see first person view (FPV) -->
-        <dji.ux.widget.FPVWidget
-            android:id="@+id/fpv"
+        <RelativeLayout
+            android:id="@+id/fpvContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+            <!-- Widget to see first person view (FPV) -->
+            <dji.ux.widget.FPVWidget
+                android:id="@+id/fpv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-        <dji.ux.widget.FPVOverlayWidget
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            <dji.ux.widget.FPVOverlayWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-        <dji.ux.workflow.CompassCalibratingWorkFlow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            <dji.ux.workflow.CompassCalibratingWorkFlow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
     </RelativeLayout>
 
-    <fragment
-        class="com.dronelink.core.ui.MapFragment"
-        android:id="@+id/mapFragment"
+    <RelativeLayout
+        android:id="@+id/secondaryView"
+        android:background="@color/background_blue"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -39,7 +45,43 @@
         custom:layout_constraintDimensionRatio="h,2:1"
         custom:layout_constraintEnd_toStartOf="@+id/guideline2"
         custom:layout_constraintHorizontal_bias="0.5"
-        custom:layout_constraintStart_toStartOf="parent" />
+        custom:layout_constraintStart_toStartOf="parent">
+        <RelativeLayout
+            android:id="@+id/mapContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <fragment
+                android:id="@+id/mapFragment"
+                class="com.dronelink.core.ui.MapboxMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/secondaryViewControls"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_width="24dp"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView"
+        custom:layout_constraintTop_toTopOf="@+id/secondaryView">
+        <ImageButton
+            android:id="@+id/primaryViewToggleButton"
+            android:background="@drawable/ic_vector_arrange_below_white_36dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <ImageButton
+            android:id="@+id/mapMoreButton"
+            android:background="@drawable/outline_layers_white_36"
+            android:layout_below="@id/primaryViewToggleButton"
+            android:layout_marginTop="8dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+    </RelativeLayout>
+
 
     <fragment
         class="com.dronelink.core.ui.TelemetryFragment"
@@ -48,8 +90,8 @@
         android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        custom:layout_constraintStart_toEndOf="@+id/mapFragment"
-        custom:layout_constraintBottom_toBottomOf="@+id/mapFragment" />
+        custom:layout_constraintStart_toEndOf="@+id/secondaryView"
+        custom:layout_constraintBottom_toBottomOf="@+id/secondaryView" />
 
     <fragment
         class="com.dronelink.core.ui.MissionFragment"
@@ -58,8 +100,8 @@
         android:layout_width="0dp"
         android:layout_height="70dp"
         custom:layout_constraintTop_toTopOf="parent"
-        custom:layout_constraintStart_toStartOf="@+id/mapFragment"
-        custom:layout_constraintEnd_toEndOf="@+id/mapFragment" />
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView"
+        custom:layout_constraintEnd_toEndOf="@+id/secondaryView" />
 
     <fragment
         class="com.dronelink.core.ui.FuncFragment"
@@ -68,7 +110,7 @@
         android:layout_width="350dp"
         android:layout_height="165dp"
         custom:layout_constraintTop_toTopOf="parent"
-        custom:layout_constraintStart_toStartOf="@+id/mapFragment" />
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

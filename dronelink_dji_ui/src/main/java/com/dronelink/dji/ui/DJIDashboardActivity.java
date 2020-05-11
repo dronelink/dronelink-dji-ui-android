@@ -10,8 +10,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.dronelink.core.CameraFile;
 import com.dronelink.core.DatedValue;
@@ -24,12 +28,15 @@ import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.command.CommandError;
 import com.dronelink.core.mission.command.Command;
 import com.dronelink.core.mission.core.Message;
+import com.dronelink.core.ui.MapboxMapFragment;
+import com.dronelink.core.ui.MicrosoftMapFragment;
 
 import dji.ux.widget.FPVWidget;
 
 public class DJIDashboardActivity extends AppCompatActivity implements Dronelink.Listener, DroneSessionManager.Listener, DroneSession.Listener, MissionExecutor.Listener {
     private DroneSession session;
     private MissionExecutor missionExecutor;
+    private boolean videoPreviewerPrimary = true;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -39,6 +46,92 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
         final FPVWidget fpv = findViewById(R.id.fpv);
         fpv.setSourceCameraNameVisibility(false);
+
+        final ImageButton primaryViewToggleButton = findViewById(com.dronelink.dji.ui.R.id.primaryViewToggleButton);
+        primaryViewToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updatePrimaryView(!videoPreviewerPrimary);
+            }
+        });
+
+        final DJIDashboardActivity self = this;
+        final ImageButton mapMoreButton = findViewById(R.id.mapMoreButton);
+        mapMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                final Fragment mapFragment = getMapFragment();
+                if (mapFragment instanceof MicrosoftMapFragment) {
+                    ((MicrosoftMapFragment)mapFragment).onMore(self, findViewById(R.id.mapMoreButton), new MicrosoftMapFragment.MoreMenuItem[] {
+                            new MicrosoftMapFragment.MoreMenuItem() {
+                                @Override
+                                public String getTitle() {
+                                    return getResources().getString(R.string.DJIDashboardActivity_map_mapbox);
+                                }
+
+                                @Override
+                                public void onClick() {
+                                    replaceMapFragment(new MapboxMapFragment());
+                                }
+                            }
+                    });
+                }
+                else if (mapFragment instanceof MapboxMapFragment) {
+                    ((MapboxMapFragment)mapFragment).onMore(self, findViewById(R.id.mapMoreButton), new MapboxMapFragment.MoreMenuItem[] {
+                            new MapboxMapFragment.MoreMenuItem() {
+                                @Override
+                                public String getTitle() {
+                                    return getResources().getString(R.string.DJIDashboardActivity_map_microsoft);
+                                }
+
+                                @Override
+                                public void onClick() {
+                                    replaceMapFragment(new MicrosoftMapFragment());
+                                }
+                            }
+                    });
+                }
+            }
+        });
+    }
+
+    private void updatePrimaryView(final boolean videoPreviewerPrimary) {
+        this.videoPreviewerPrimary = videoPreviewerPrimary;
+
+        final View videoPreviewer = findViewById(R.id.fpvContainer);
+        ((ViewGroup)videoPreviewer.getParent()).removeView(videoPreviewer);
+
+        final View mapContainer = findViewById(R.id.mapContainer);
+        ((ViewGroup)mapContainer.getParent()).removeView(mapContainer);
+
+        final ViewGroup primary = findViewById(R.id.primaryView);
+        final ViewGroup secondary = findViewById(R.id.secondaryView);
+        if (videoPreviewerPrimary) {
+            primary.addView(videoPreviewer);
+            secondary.addView(mapContainer);
+        }
+        else {
+            primary.addView(mapContainer);
+            secondary.addView(videoPreviewer);
+        }
+    }
+
+    private Fragment getMapFragment() {
+        final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        if (fragment == null) {
+            return getSupportFragmentManager().findFragmentByTag("map");
+        }
+
+        return fragment;
+    }
+
+    private void replaceMapFragment(final Fragment mapFragment) {
+        final Fragment currentMapFragment = getMapFragment();
+        final ViewGroup mapFragmentContainer = (ViewGroup)currentMapFragment.getView().getParent();
+        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.remove(getMapFragment());
+        fragmentTransaction.add(mapFragmentContainer.getId(), mapFragment, "map");
+        fragmentTransaction.commit();
     }
 
     @Override
