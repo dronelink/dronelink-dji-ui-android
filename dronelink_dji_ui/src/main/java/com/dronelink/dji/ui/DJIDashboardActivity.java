@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.dronelink.core.CameraFile;
 import com.dronelink.core.DatedValue;
@@ -28,8 +29,10 @@ import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.command.CommandError;
 import com.dronelink.core.mission.command.Command;
 import com.dronelink.core.mission.core.Message;
+import com.dronelink.core.mission.core.UserInterfaceSettings;
 import com.dronelink.core.ui.MapboxMapFragment;
 import com.dronelink.core.ui.MicrosoftMapFragment;
+import com.squareup.picasso.Picasso;
 
 import dji.ux.widget.FPVWidget;
 
@@ -37,6 +40,7 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     private DroneSession session;
     private MissionExecutor missionExecutor;
     private boolean videoPreviewerPrimary = true;
+    private ImageView reticalImageView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -46,6 +50,8 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
         final FPVWidget fpv = findViewById(R.id.fpv);
         fpv.setSourceCameraNameVisibility(false);
+
+        reticalImageView = findViewById(R.id.reticalImageView);
 
         final ImageButton primaryViewToggleButton = findViewById(com.dronelink.dji.ui.R.id.primaryViewToggleButton);
         primaryViewToggleButton.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +176,21 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         onBackPressed();
     }
 
+    public void applyUserInterfaceSettings(final UserInterfaceSettings userInterfaceSettings) {
+        if (userInterfaceSettings == null) {
+            reticalImageView.setVisibility(View.INVISIBLE);
+            return;
+        }
+
+        if (userInterfaceSettings.reticalImageUrl != null && !userInterfaceSettings.reticalImageUrl.isEmpty()) {
+            Picasso.get().load(userInterfaceSettings.reticalImageUrl).into(reticalImageView);
+            reticalImageView.setVisibility(View.VISIBLE);
+        }
+        else {
+            reticalImageView.setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     public void onRegistered(final String error) {}
 
@@ -177,19 +198,47 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     public void onMissionLoaded(final MissionExecutor executor) {
         executor.addListener(this);
         this.missionExecutor = executor;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                applyUserInterfaceSettings(executor.userInterfaceSettings);
+            }
+        });
     }
 
     @Override
     public void onMissionUnloaded(final MissionExecutor executor) {
         executor.removeListener(this);
         this.missionExecutor = null;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                applyUserInterfaceSettings(null);
+            }
+        });
     }
 
     @Override
-    public void onFuncLoaded(final FuncExecutor executor) {}
+    public void onFuncLoaded(final FuncExecutor executor) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                applyUserInterfaceSettings(executor.getUserInterfaceSettings());
+            }
+        });
+    }
 
     @Override
-    public void onFuncUnloaded(final FuncExecutor executor) {}
+    public void onFuncUnloaded(final FuncExecutor executor) {
+        if (missionExecutor == null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    applyUserInterfaceSettings(null);
+                }
+            });
+        }
+    }
 
     @Override
     public void onOpened(final DroneSession session) {

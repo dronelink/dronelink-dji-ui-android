@@ -29,6 +29,15 @@
             <dji.ux.workflow.CompassCalibratingWorkFlow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/reticalImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                android:clickable="false"
+                android:focusable="false"
+                android:scaleType="fitCenter" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -52,7 +61,7 @@
             android:layout_height="fill_parent">
             <fragment
                 android:id="@+id/mapFragment"
-                class="com.dronelink.core.ui.MapboxMapFragment"
+                class="com.dronelink.core.ui.MicrosoftMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>
@@ -81,7 +90,6 @@
             android:layout_width="24dp"
             android:layout_height="24dp" />
     </RelativeLayout>
-
 
     <fragment
         class="com.dronelink.core.ui.TelemetryFragment"

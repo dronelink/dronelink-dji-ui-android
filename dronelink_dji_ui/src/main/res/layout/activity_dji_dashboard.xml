@@ -29,6 +29,15 @@
             <dji.ux.workflow.CompassCalibratingWorkFlow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/reticalImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                android:clickable="false"
+                android:focusable="false"
+                android:scaleType="fitCenter" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -45,33 +54,40 @@
         custom:layout_constraintEnd_toStartOf="@+id/guideline2"
         custom:layout_constraintHorizontal_bias="0.5"
         custom:layout_constraintStart_toStartOf="parent">
-        <fragment
-            android:id="@+id/mapFragment"
-            class="com.dronelink.core.ui.MapboxMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <RelativeLayout
-            android:id="@+id/secondaryViewControls"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_width="24dp"
-            android:layout_height="64dp"
-            android:orientation="horizontal">
-            <ImageButton
-                android:id="@+id/primaryViewToggleButton"
-                android:background="@drawable/ic_vector_arrange_below_white_36dp"
-                android:layout_width="24dp"
-                android:layout_height="24dp" />
-
-            <ImageButton
-                android:id="@+id/mapMoreButton"
-                android:background="@drawable/outline_layers_white_36"
-                android:layout_below="@id/primaryViewToggleButton"
-                android:layout_marginTop="8dp"
-                android:layout_width="24dp"
-                android:layout_height="24dp" />
+            android:id="@+id/mapContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <fragment
+                android:id="@+id/mapFragment"
+                class="com.dronelink.core.ui.MicrosoftMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/secondaryViewControls"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_width="24dp"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView"
+        custom:layout_constraintTop_toTopOf="@+id/secondaryView">
+        <ImageButton
+            android:id="@+id/primaryViewToggleButton"
+            android:background="@drawable/ic_vector_arrange_below_white_36dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <ImageButton
+            android:id="@+id/mapMoreButton"
+            android:background="@drawable/outline_layers_white_36"
+            android:layout_below="@id/primaryViewToggleButton"
+            android:layout_marginTop="8dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.Guideline
