@@ -60,7 +60,7 @@
             android:layout_height="fill_parent">
             <fragment
                 android:id="@+id/mapFragment"
-                class="com.dronelink.core.ui.MicrosoftMapFragment"
+                class="com.dronelink.core.ui.MapboxMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>
