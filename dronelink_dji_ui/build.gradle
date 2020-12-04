@@ -8,7 +8,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.6.0"
+        versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -26,13 +26,14 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.github.dronelink:dronelink-core-android:1.7.0'
-    implementation 'com.github.dronelink:dronelink-dji-android:1.8.0'
-    implementation 'com.github.dronelink:dronelink-core-ui-android:1.5.0'
+    implementation 'com.github.dronelink:dronelink-core-android:2.0.0'
+    implementation 'com.github.dronelink:dronelink-dji-android:2.0.0'
+    implementation 'com.github.dronelink:dronelink-core-ui-android:2.0.0'
     implementation('com.dji:dji-uxsdk:4.13', {
         exclude group: 'com.google.android.gms'
+        exclude group: 'com.amap.api'
     })
 }

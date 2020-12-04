@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_blue"
     android:keepScreenOn="true"
+    android:layoutDirection="ltr"
     tools:context=".DJIDashboardActivity">
 
     <RelativeLayout
@@ -20,15 +21,18 @@
             <dji.ux.widget.FPVWidget
                 android:id="@+id/fpv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                custom:videoSource="primary" />
 
             <dji.ux.widget.FPVOverlayWidget
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                custom:overlayVideoSource="primary" />
 
             <dji.ux.workflow.CompassCalibratingWorkFlow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:id="@+id/reticalImageView"
@@ -122,6 +126,15 @@
         android:layout_marginTop="76dp"
         android:layout_width="310dp"
         android:layout_height="165dp"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView" />
+
+    <fragment
+        class="com.dronelink.core.ui.ModeFragment"
+        android:id="@+id/modeFragment"
+        android:layout_marginTop="76dp"
+        android:layout_width="325dp"
+        android:layout_height="70dp"
         custom:layout_constraintTop_toTopOf="parent"
         custom:layout_constraintStart_toStartOf="@+id/secondaryView" />
 

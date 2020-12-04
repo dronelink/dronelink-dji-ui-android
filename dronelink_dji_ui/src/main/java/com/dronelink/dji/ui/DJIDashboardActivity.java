@@ -8,6 +8,7 @@ package com.dronelink.dji.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -25,11 +26,12 @@ import com.dronelink.core.DroneSessionManager;
 import com.dronelink.core.Dronelink;
 import com.dronelink.core.FuncExecutor;
 import com.dronelink.core.MissionExecutor;
+import com.dronelink.core.ModeExecutor;
 import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.command.CommandError;
-import com.dronelink.core.mission.command.Command;
-import com.dronelink.core.mission.core.Message;
-import com.dronelink.core.mission.core.UserInterfaceSettings;
+import com.dronelink.core.kernel.command.Command;
+import com.dronelink.core.kernel.core.Message;
+import com.dronelink.core.kernel.core.UserInterfaceSettings;
 import com.dronelink.core.ui.MapboxMapFragment;
 import com.dronelink.core.ui.MicrosoftMapFragment;
 import com.squareup.picasso.Picasso;
@@ -45,6 +47,10 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.black));
+        }
 
         setContentView(R.layout.activity_dji_dashboard);
 
@@ -168,7 +174,7 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
             return;
         }
 
-        Dronelink.getInstance().unloadMission();
+        Dronelink.getInstance().unload();
         super.onBackPressed();
     }
 
@@ -239,6 +245,12 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
             });
         }
     }
+
+    @Override
+    public void onModeLoaded(final ModeExecutor executor) {}
+
+    @Override
+    public void onModeUnloaded(final ModeExecutor executor) {}
 
     @Override
     public void onOpened(final DroneSession session) {
