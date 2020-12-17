@@ -150,14 +150,14 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     public void onStart() {
         super.onStart();
         Dronelink.getInstance().addListener(this);
-        Dronelink.getInstance().getSessionManager().addListener(this);
+        //Dronelink.getInstance().getSessionManager().addListener(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         Dronelink.getInstance().removeListener(this);
-        Dronelink.getInstance().getSessionManager().removeListener(this);
+        //Dronelink.getInstance().getSessionManager().removeListener(this);
         if (session != null) {
             session.removeListener(this);
         }
@@ -199,6 +199,9 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
     @Override
     public void onRegistered(final String error) {}
+
+    @Override
+    public void onDroneSessionManagerAdded(DroneSessionManager manager) { }
 
     @Override
     public void onMissionLoaded(final MissionExecutor executor) {
