@@ -12,7 +12,7 @@ import com.dronelink.core.ui.widget.Widget
 import dji.common.camera.SettingsDefinitions
 import dji.ux.widget.FPVWidget
 
-class VideoFeederFragment: Widget() {
+class DJICameraFeedWidget: Widget() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

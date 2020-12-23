@@ -25,7 +25,7 @@ open class DJIWidgetFactory(val context: Context, session: DroneSession?): Widge
             return null
         }
 
-        return VideoFeederFragment()
+        return DJICameraFeedWidget()
 
     }
 
