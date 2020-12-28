@@ -27,8 +27,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
 //    implementation 'com.github.dronelink:dronelink-core-android:2.0.0'
 //    implementation 'com.github.dronelink:dronelink-dji-android:2.0.0'
@@ -53,4 +53,6 @@ dependencies {
         exclude group: 'com.google.android.gms'
         exclude group: 'com.amap.api'
     })
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
