@@ -8,6 +8,8 @@ package com.dronelink.dji.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,7 @@ import com.dronelink.core.command.CommandError;
 import com.dronelink.core.kernel.command.Command;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.UserInterfaceSettings;
+import com.dronelink.core.ui.DroneOffsetsFragment;
 import com.dronelink.core.ui.MapboxMapFragment;
 import com.dronelink.core.ui.MicrosoftMapFragment;
 import com.squareup.picasso.Picasso;
@@ -43,6 +46,12 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     private MissionExecutor missionExecutor;
     private boolean videoPreviewerPrimary = true;
     private ImageView reticalImageView;
+    private boolean offsetsVisible = false;
+    private ImageButton offsetsButton;
+    private boolean offsetsButtonEnabled = false;
+    private Fragment droneOffsetsFragment0;
+    private Fragment droneOffsetsFragment1;
+    private Fragment cameraOffsetsFragment;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -58,6 +67,21 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         fpv.setSourceCameraNameVisibility(false);
 
         reticalImageView = findViewById(R.id.reticalImageView);
+
+        offsetsButton = findViewById(R.id.offsetsButton);
+        droneOffsetsFragment0 = getDroneOffsetsFragment0();
+        droneOffsetsFragment1 = getDroneOffsetsFragment1();
+        if (droneOffsetsFragment1 == null) {
+            ((DroneOffsetsFragment)droneOffsetsFragment0).stylesEnabled = true;
+        }
+        else {
+            ((DroneOffsetsFragment)droneOffsetsFragment0).stylesEnabled = false;
+            ((DroneOffsetsFragment)droneOffsetsFragment0).setStyle(DroneOffsetsFragment.Style.POSITION);
+            ((DroneOffsetsFragment)droneOffsetsFragment1).stylesEnabled = false;
+            ((DroneOffsetsFragment)droneOffsetsFragment1).setStyle(DroneOffsetsFragment.Style.ALT_YAW);
+        }
+        cameraOffsetsFragment = getCameraOffsetsFragment();
+        toggleOffsets(offsetsVisible);
 
         final ImageButton primaryViewToggleButton = findViewById(com.dronelink.dji.ui.R.id.primaryViewToggleButton);
         primaryViewToggleButton.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +152,33 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         }
     }
 
+    private Fragment getDroneOffsetsFragment0() {
+        final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.droneOffsetsFragment0);
+        if (fragment == null) {
+            return getSupportFragmentManager().findFragmentByTag("droneOffsetsFragment0");
+        }
+
+        return fragment;
+    }
+
+    private Fragment getDroneOffsetsFragment1() {
+        final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.droneOffsetsFragment1);
+        if (fragment == null) {
+            return getSupportFragmentManager().findFragmentByTag("droneOffsetsFragment1");
+        }
+
+        return fragment;
+    }
+
+    private Fragment getCameraOffsetsFragment() {
+        final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.cameraOffsetsFragment);
+        if (fragment == null) {
+            return getSupportFragmentManager().findFragmentByTag("cameraOffsetsFragment");
+        }
+
+        return fragment;
+    }
+
     private Fragment getMapFragment() {
         final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.mapFragment);
         if (fragment == null) {
@@ -182,9 +233,26 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         onBackPressed();
     }
 
+    public void onToggleOffsets(final View view) {
+        toggleOffsets(!offsetsVisible);
+    }
+
+    private void toggleOffsets(final boolean value) {
+        offsetsVisible = value;
+        droneOffsetsFragment0.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+        if (droneOffsetsFragment1 != null) {
+            droneOffsetsFragment1.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+        }
+        cameraOffsetsFragment.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+        offsetsButton.setImageTintList(ColorStateList.valueOf(offsetsVisible ? Color.parseColor("#f50057") : Color.parseColor("#ffffff")));
+        offsetsButton.setVisibility(offsetsButtonEnabled ? View.VISIBLE : View.INVISIBLE);
+    }
+
     public void applyUserInterfaceSettings(final UserInterfaceSettings userInterfaceSettings) {
         if (userInterfaceSettings == null) {
             reticalImageView.setVisibility(View.INVISIBLE);
+            offsetsButtonEnabled = false;
+            toggleOffsets(false);
             return;
         }
 
@@ -194,6 +262,15 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         }
         else {
             reticalImageView.setVisibility(View.INVISIBLE);
+        }
+
+        if (userInterfaceSettings.droneOffsetsVisible != null) {
+            offsetsButtonEnabled = userInterfaceSettings.droneOffsetsVisible;
+            toggleOffsets(userInterfaceSettings.droneOffsetsVisible);
+        }
+        else {
+            offsetsButtonEnabled = false;
+            toggleOffsets(false);
         }
     }
 
