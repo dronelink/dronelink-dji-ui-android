@@ -45,7 +45,7 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     private DroneSession session;
     private MissionExecutor missionExecutor;
     private boolean videoPreviewerPrimary = true;
-    private ImageView reticalImageView;
+    private ImageView reticleImageView;
     private boolean offsetsVisible = false;
     private ImageButton offsetsButton;
     private boolean offsetsButtonEnabled = false;
@@ -66,7 +66,7 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         final FPVWidget fpv = findViewById(R.id.fpv);
         fpv.setSourceCameraNameVisibility(false);
 
-        reticalImageView = findViewById(R.id.reticalImageView);
+        reticleImageView = findViewById(R.id.reticleImageView);
 
         offsetsButton = findViewById(R.id.offsetsButton);
         droneOffsetsFragment0 = getDroneOffsetsFragment0();
@@ -250,18 +250,18 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
     public void applyUserInterfaceSettings(final UserInterfaceSettings userInterfaceSettings) {
         if (userInterfaceSettings == null) {
-            reticalImageView.setVisibility(View.INVISIBLE);
+            reticleImageView.setVisibility(View.INVISIBLE);
             offsetsButtonEnabled = false;
             toggleOffsets(false);
             return;
         }
 
-        if (userInterfaceSettings.reticalImageUrl != null && !userInterfaceSettings.reticalImageUrl.isEmpty()) {
-            Picasso.get().load(userInterfaceSettings.reticalImageUrl).into(reticalImageView);
-            reticalImageView.setVisibility(View.VISIBLE);
+        if (userInterfaceSettings.reticleImageUrl != null && !userInterfaceSettings.reticleImageUrl.isEmpty()) {
+            Picasso.get().load(userInterfaceSettings.reticleImageUrl).into(reticleImageView);
+            reticleImageView.setVisibility(View.VISIBLE);
         }
         else {
-            reticalImageView.setVisibility(View.INVISIBLE);
+            reticleImageView.setVisibility(View.INVISIBLE);
         }
 
         if (userInterfaceSettings.droneOffsetsVisible != null) {

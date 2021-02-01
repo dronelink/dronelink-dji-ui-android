@@ -35,7 +35,7 @@
                 android:layout_height="match_parent" />
 
             <ImageView
-                android:id="@+id/reticalImageView"
+                android:id="@+id/reticleImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="invisible"
@@ -140,6 +140,7 @@
         android:layout_marginBottom="8dp"
         android:layout_width="240dp"
         android:layout_height="120dp"
+        android:visibility="invisible"
         tools:ignore="RtlHardcoded"/>
 
     <androidx.constraintlayout.widget.Guideline
