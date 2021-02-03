@@ -35,7 +35,7 @@
                 android:layout_height="match_parent" />
 
             <ImageView
-                android:id="@+id/reticalImageView"
+                android:id="@+id/reticleImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="invisible"
@@ -137,6 +137,15 @@
         android:layout_height="70dp"
         custom:layout_constraintTop_toTopOf="parent"
         custom:layout_constraintStart_toStartOf="@+id/secondaryView" />
+
+    <dji.ux.widget.HistogramWidget
+        custom:layout_constraintBottom_toTopOf="@+id/telemetryFragment"
+        custom:layout_constraintStart_toStartOf="@+id/telemetryFragment"
+        android:layout_marginBottom="8dp"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
+        android:visibility="invisible"
+        tools:ignore="RtlHardcoded"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -280,6 +289,39 @@
             android:layout_marginTop="15dp"
             tools:ignore="RtlHardcoded"/>
 
+        <ImageButton
+            android:id="@+id/offsetsButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/CameraCapturePanel"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/baseline_control_camera_white_48"
+            android:background="@android:color/transparent"
+            android:onClick="onToggleOffsets"/>
+
+        <fragment
+            class="com.dronelink.core.ui.DroneOffsetsFragment"
+            android:id="@+id/droneOffsetsFragment0"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="8dp"
+            android:layout_alignTop="@+id/CameraCapturePanel"
+            android:layout_toLeftOf="@+id/CameraCapturePanel" />
+
+        <fragment
+            class="com.dronelink.core.ui.CameraOffsetsFragment"
+            android:id="@+id/cameraOffsetsFragment"
+            android:layout_width="200dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_below="@+id/droneOffsetsFragment0"
+            android:layout_toLeftOf="@+id/CameraCapturePanel"
+            android:layout_centerHorizontal="@+id/droneOffsetsFragment0" />
+
         <dji.ux.panel.CameraSettingExposurePanel
             android:layout_width="180dp"
             android:layout_below="@id/camera"
@@ -308,6 +350,7 @@
             android:layout_marginLeft="90dp"
             custom:excludeItem="ESCStatus"
             android:visibility="gone"/>
+
 
     </RelativeLayout>
 
