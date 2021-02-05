@@ -18,11 +18,11 @@ class DJICameraFeedWidget: Widget() {
         val fpvWidget = FPVWidget(requireContext())
         val layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         layoutParams.gravity = Gravity.CENTER
-        fpvWidget.layoutParams = layoutParams
-        fpvWidget.videoSource = FPVWidget.VideoSource.PRIMARY
-        fpvWidget.setSourceCameraNameVisibility(false)
+        //FIXME fpvWidget.layoutParams = layoutParams
+        //FIXME fpvWidget.videoSource = FPVWidget.VideoSource.PRIMARY
+        //FIXME fpvWidget.setSourceCameraNameVisibility(false)
 
-        frameLayout.addView(fpvWidget)
+        //FIXME frameLayout.addView(fpvWidget)
 
         return frameLayout
     }
