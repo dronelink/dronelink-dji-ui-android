@@ -1,6 +1,3 @@
-include ':dronelink_dji_ui', ':dronelink_core', ':dronelink_core_ui', ':dronelink_dji'
-project(':dronelink_core').projectDir = new File(settingsDir, '../../private/dronelink-core-android/dronelink_core')
-project(':dronelink_core_ui').projectDir = new File(settingsDir, '../dronelink-core-ui-android/dronelink_core_ui')
-project(':dronelink_dji').projectDir = new File(settingsDir, '../dronelink-dji-android/dronelink_dji')
+include ':dronelink_dji_ui'
 rootProject.name='DronelinkDJIUI'
 
