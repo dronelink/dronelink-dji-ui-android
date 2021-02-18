@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 28
 
@@ -12,6 +12,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     buildTypes {
@@ -47,4 +51,6 @@ dependencies {
         exclude group: 'com.google.android.gms'
         exclude group: 'com.amap.api'
     })
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:+"
 }
