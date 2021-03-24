@@ -239,7 +239,9 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
     private void toggleOffsets(final boolean value) {
         offsetsVisible = value;
-        droneOffsetsFragment0.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+        if (droneOffsetsFragment0 != null) {
+            droneOffsetsFragment0.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+        }
         if (droneOffsetsFragment1 != null) {
             droneOffsetsFragment1.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
         }
