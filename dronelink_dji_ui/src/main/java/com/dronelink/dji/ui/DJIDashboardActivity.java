@@ -240,10 +240,16 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     private void toggleOffsets(final boolean value) {
         offsetsVisible = value;
         if (droneOffsetsFragment0 != null) {
-            droneOffsetsFragment0.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+            final View view = droneOffsetsFragment0.getView();
+            if (view != null) {
+                droneOffsetsFragment0.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+            }
         }
         if (droneOffsetsFragment1 != null) {
-            droneOffsetsFragment1.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+            final View view = droneOffsetsFragment1.getView();
+            if (view != null) {
+                droneOffsetsFragment1.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+            }
         }
         cameraOffsetsFragment.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
         offsetsButton.setImageTintList(ColorStateList.valueOf(offsetsVisible ? Color.parseColor("#f50057") : Color.parseColor("#ffffff")));
@@ -388,6 +394,11 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
     @Override
     public void onMissionEstimated(final MissionExecutor executor, final MissionExecutor.Estimate estimate) {}
+
+    @Override
+    public Message[] missionEngageDisallowedReasons(final MissionExecutor executor) {
+        return null;
+    }
 
     @Override
     public void onMissionEngaging(final MissionExecutor executor) {}
