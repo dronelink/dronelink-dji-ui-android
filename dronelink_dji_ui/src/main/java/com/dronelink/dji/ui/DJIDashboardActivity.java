@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -32,6 +33,7 @@ import com.dronelink.core.ModeExecutor;
 import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.command.CommandError;
 import com.dronelink.core.kernel.command.Command;
+import com.dronelink.core.kernel.core.CameraFocusCalibration;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.UserInterfaceSettings;
 import com.dronelink.core.ui.DroneOffsetsFragment;
@@ -42,6 +44,8 @@ import com.squareup.picasso.Picasso;
 import dji.ux.widget.FPVWidget;
 
 public class DJIDashboardActivity extends AppCompatActivity implements Dronelink.Listener, DroneSessionManager.Listener, DroneSession.Listener, MissionExecutor.Listener {
+    private static final String TAG = DJIDashboardActivity.class.getCanonicalName();
+
     private DroneSession session;
     private MissionExecutor missionExecutor;
     private boolean videoPreviewerPrimary = true;
@@ -52,6 +56,9 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     private Fragment droneOffsetsFragment0;
     private Fragment droneOffsetsFragment1;
     private Fragment cameraOffsetsFragment;
+    private Fragment telemetryFragment;
+    private Fragment debugFragment;
+    private boolean debug = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -81,6 +88,9 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
             ((DroneOffsetsFragment)droneOffsetsFragment1).setStyle(DroneOffsetsFragment.Style.ALT_YAW);
         }
         cameraOffsetsFragment = getCameraOffsetsFragment();
+        telemetryFragment = getTelemetryFragment();
+        debugFragment = getDebugFragment();
+
         toggleOffsets(offsetsVisible);
 
         final ImageButton primaryViewToggleButton = findViewById(com.dronelink.dji.ui.R.id.primaryViewToggleButton);
@@ -129,6 +139,29 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
                 }
             }
         });
+
+        telemetryFragment.getView().setOnClickListener(new View.OnClickListener() {
+            long previousDebugMillis = System.currentTimeMillis();
+            int consecutiveDebugTaps = 0;
+
+            @Override
+            public void onClick(final View view) {
+                if ((System.currentTimeMillis() - previousDebugMillis) < 500) {
+                    consecutiveDebugTaps++;
+
+                    Log.d(TAG, "Debug taps " + consecutiveDebugTaps);
+
+                    if (consecutiveDebugTaps >= 7) {
+                        consecutiveDebugTaps = 0;
+                        toggleDebug();
+                    }
+                }
+                else {
+                    consecutiveDebugTaps = 1;
+                }
+                previousDebugMillis = System.currentTimeMillis();
+            }
+        });
     }
 
     private void updatePrimaryView(final boolean videoPreviewerPrimary) {
@@ -150,6 +183,15 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
             primary.addView(mapContainer);
             secondary.addView(videoPreviewer);
         }
+    }
+
+    private Fragment getDebugFragment() {
+        final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.debugFragment);
+        if (fragment == null) {
+            return getSupportFragmentManager().findFragmentByTag("debugFragment");
+        }
+
+        return fragment;
     }
 
     private Fragment getDroneOffsetsFragment0() {
@@ -174,6 +216,15 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.cameraOffsetsFragment);
         if (fragment == null) {
             return getSupportFragmentManager().findFragmentByTag("cameraOffsetsFragment");
+        }
+
+        return fragment;
+    }
+
+    private Fragment getTelemetryFragment() {
+        final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.telemetryFragment);
+        if (fragment == null) {
+            return getSupportFragmentManager().findFragmentByTag("telemetryFragment");
         }
 
         return fragment;
@@ -242,18 +293,30 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         if (droneOffsetsFragment0 != null) {
             final View view = droneOffsetsFragment0.getView();
             if (view != null) {
-                droneOffsetsFragment0.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+                view.setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
             }
         }
         if (droneOffsetsFragment1 != null) {
             final View view = droneOffsetsFragment1.getView();
             if (view != null) {
-                droneOffsetsFragment1.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+                view.setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
             }
         }
-        cameraOffsetsFragment.getView().setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+
+        final View view = cameraOffsetsFragment.getView();
+        if (view != null) {
+            view.setVisibility(offsetsVisible ? View.VISIBLE : View.INVISIBLE);
+        }
         offsetsButton.setImageTintList(ColorStateList.valueOf(offsetsVisible ? Color.parseColor("#f50057") : Color.parseColor("#ffffff")));
         offsetsButton.setVisibility(offsetsButtonEnabled ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private void toggleDebug() {
+        debug = !debug;
+        final View view = debugFragment.getView();
+        if (view != null) {
+            view.setVisibility(debug ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
     public void applyUserInterfaceSettings(final UserInterfaceSettings userInterfaceSettings) {
@@ -336,6 +399,12 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
     @Override
     public void onModeUnloaded(final ModeExecutor executor) {}
+
+    @Override
+    public void onCameraFocusCalibrationRequested(final CameraFocusCalibration value) {}
+
+    @Override
+    public void onCameraFocusCalibrationUpdated(final CameraFocusCalibration value) {}
 
     @Override
     public void onOpened(final DroneSession session) {

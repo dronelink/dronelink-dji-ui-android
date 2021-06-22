@@ -106,33 +106,15 @@
         custom:layout_constraintBottom_toBottomOf="@+id/secondaryView" />
 
     <fragment
-        class="com.dronelink.core.ui.MissionFragment"
-        android:id="@+id/missionFragment"
-        android:layout_marginTop="36dp"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        custom:layout_constraintTop_toTopOf="parent"
-        custom:layout_constraintStart_toStartOf="@+id/secondaryView"
-        custom:layout_constraintEnd_toEndOf="@+id/secondaryView" />
-
-    <fragment
-        class="com.dronelink.core.ui.FuncFragment"
-        android:id="@+id/funcFragment"
-        android:layout_marginTop="36dp"
-        android:layout_width="350dp"
-        android:layout_height="165dp"
-        custom:layout_constraintTop_toTopOf="parent"
-        custom:layout_constraintStart_toStartOf="@+id/secondaryView" />
-
-    <fragment
-        class="com.dronelink.core.ui.ModeFragment"
-        android:id="@+id/modeFragment"
-        android:layout_marginTop="36dp"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        custom:layout_constraintTop_toTopOf="parent"
-        custom:layout_constraintStart_toStartOf="@+id/secondaryView"
-        custom:layout_constraintEnd_toEndOf="@+id/secondaryView" />
+        class="com.dronelink.core.ui.DebugFragment"
+        android:id="@+id/debugFragment"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        custom:layout_constraintStart_toEndOf="@+id/secondaryView"
+        custom:layout_constraintBottom_toTopOf="@+id/telemetryFragment" />
 
     <dji.ux.widget.HistogramWidget
         custom:layout_constraintBottom_toTopOf="@+id/telemetryFragment"
@@ -366,5 +348,44 @@
             android:visibility="gone"/>
 
     </RelativeLayout>
+
+
+    <fragment
+        class="com.dronelink.core.ui.MissionFragment"
+        android:id="@+id/missionFragment"
+        android:layout_marginTop="36dp"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView"
+        custom:layout_constraintEnd_toEndOf="@+id/secondaryView" />
+
+    <fragment
+        class="com.dronelink.core.ui.FuncFragment"
+        android:id="@+id/funcFragment"
+        android:layout_marginTop="36dp"
+        android:layout_width="350dp"
+        android:layout_height="165dp"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView" />
+
+    <fragment
+        class="com.dronelink.core.ui.ModeFragment"
+        android:id="@+id/modeFragment"
+        android:layout_marginTop="36dp"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView"
+        custom:layout_constraintEnd_toEndOf="@+id/secondaryView" />
+
+    <fragment
+        class="com.dronelink.core.ui.CameraFocusCalibrationFragment"
+        android:id="@+id/cameraFocusCalibrationFragment"
+        android:layout_marginTop="36dp"
+        android:layout_width="350dp"
+        android:layout_height="165dp"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:layout_constraintStart_toStartOf="@+id/secondaryView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
