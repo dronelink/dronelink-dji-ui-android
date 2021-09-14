@@ -3,6 +3,6 @@
     <string name="DJIDashboardActivity_camera_noSDCard_title">SD Card Missing</string>
     <string name="DJIDashboardActivity_camera_noSDCard_details">Please make sure to insert an SD card before running a mission with data capture.</string>
     <string name="DJIDashboardActivity_loading_mission">Loading mission...</string>
-    <string name="DJIDashboardActivity_map_mapbox">2D (Satellite)</string>
+    <string name="DJIDashboardActivity_map_mapbox">2D</string>
     <string name="DJIDashboardActivity_map_microsoft">3D (Beta)</string>
 </resources>

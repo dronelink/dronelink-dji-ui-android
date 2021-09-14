@@ -240,14 +240,14 @@
                 android:layout_height="40dp"/>
         </LinearLayout>
 
-        <dji.ux.widget.ManualFocusWidget
-            android:layout_below="@id/camera"
-            android:layout_alignLeft="@id/camera"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="5dp"
-            android:layout_width="42dp"
-            android:layout_height="218dp"
-            tools:ignore="RtlHardcoded"/>
+<!--        <dji.ux.widget.ManualFocusWidget-->
+<!--            android:layout_below="@id/camera"-->
+<!--            android:layout_alignLeft="@id/camera"-->
+<!--            android:layout_marginLeft="25dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_width="42dp"-->
+<!--            android:layout_height="218dp"-->
+<!--            tools:ignore="RtlHardcoded"/>-->
 
         <dji.ux.widget.RemainingFlightTimeWidget
             android:layout_alignParentTop="true"
