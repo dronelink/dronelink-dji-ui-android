@@ -480,4 +480,7 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
     @Override
     public void onMissionDisengaged(final MissionExecutor executor, final MissionExecutor.Engagement engagement, final Message reason) {}
+
+    @Override
+    public void onMissionUpdatedDisconnected(final MissionExecutor executor, final MissionExecutor.Engagement engagement) {}
 }
