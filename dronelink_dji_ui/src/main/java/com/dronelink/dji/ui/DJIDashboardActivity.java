@@ -16,11 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 
 import com.dronelink.core.CameraFile;
 import com.dronelink.core.DatedValue;
@@ -30,17 +34,32 @@ import com.dronelink.core.Dronelink;
 import com.dronelink.core.FuncExecutor;
 import com.dronelink.core.MissionExecutor;
 import com.dronelink.core.ModeExecutor;
+import com.dronelink.core.adapters.CameraAdapter;
 import com.dronelink.core.adapters.CameraStateAdapter;
 import com.dronelink.core.command.CommandError;
 import com.dronelink.core.kernel.command.Command;
+import com.dronelink.core.kernel.command.camera.DisplayModeCameraCommand;
+import com.dronelink.core.kernel.command.camera.VideoStreamSourceCameraCommand;
 import com.dronelink.core.kernel.core.CameraFocusCalibration;
 import com.dronelink.core.kernel.core.Message;
 import com.dronelink.core.kernel.core.UserInterfaceSettings;
+import com.dronelink.core.kernel.core.enums.CameraDisplayMode;
+import com.dronelink.core.kernel.core.enums.CameraVideoStreamSource;
 import com.dronelink.core.ui.DroneOffsetsFragment;
 import com.dronelink.core.ui.MapboxMapFragment;
 import com.dronelink.core.ui.MicrosoftMapFragment;
+import com.dronelink.dji.DJIVirtualStickSession;
+import com.dronelink.dji.adapters.DJICameraAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
+import dji.common.camera.SettingsDefinitions;
+import dji.common.error.DJIError;
+import dji.common.product.Model;
+import dji.common.util.CommonCallbacks;
+import dji.midware.usb.P3.UsbAccessoryService;
+import dji.sdk.camera.Lens;
 import dji.ux.widget.FPVWidget;
 
 public class DJIDashboardActivity extends AppCompatActivity implements Dronelink.Listener, DroneSessionManager.Listener, DroneSession.Listener, MissionExecutor.Listener {
@@ -50,6 +69,7 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     private MissionExecutor missionExecutor;
     private boolean videoPreviewerPrimary = true;
     private ImageView reticleImageView;
+    private ImageButton cameraDisplayModeButton;
     private boolean offsetsVisible = false;
     private ImageButton offsetsButton;
     private boolean offsetsButtonEnabled = false;
@@ -74,6 +94,14 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         fpv.setSourceCameraNameVisibility(false);
 
         reticleImageView = findViewById(R.id.reticleImageView);
+
+        cameraDisplayModeButton = findViewById(R.id.cameraDisplayModeButton);
+        cameraDisplayModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                onCameraDisplayMode(v);
+            }
+        });
 
         offsetsButton = findViewById(R.id.offsetsButton);
         droneOffsetsFragment0 = getDroneOffsetsFragment0();
@@ -345,6 +373,82 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         }
     }
 
+    private void onCameraDisplayMode(final View anchor) {
+        final PopupMenu actionSheet = new PopupMenu(this, anchor);
+
+        final DroneSession sessionLocal = session;
+        if (sessionLocal == null) {
+            return;
+        }
+
+        final CameraAdapter camera = sessionLocal.getDrone().getCamera(0);
+        if (!(camera instanceof DJICameraAdapter)) {
+            return;
+        }
+
+        final List<Lens> lenses = ((DJICameraAdapter) camera).camera.getLenses();
+        if (lenses == null) {
+            return;
+        }
+
+        if (sessionLocal.getModel() == dji.common.product.Model.MATRICE_300_RTK.getDisplayName()) {
+            actionSheet.getMenu().add(com.dronelink.core.ui.R.string.DJIDashboard_camera_video_stream_source_wide);
+            actionSheet.getMenu().add(com.dronelink.core.ui.R.string.DJIDashboard_camera_video_stream_source_zoom);
+            if (lenses.size() > 2) {
+                actionSheet.getMenu().add(com.dronelink.core.ui.R.string.DJIDashboard_camera_video_stream_source_thermal);
+            }
+
+            actionSheet.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(final MenuItem item) {
+                    final VideoStreamSourceCameraCommand command = new VideoStreamSourceCameraCommand();
+                    if (item.getTitle() == getString(com.dronelink.core.ui.R.string.DJIDashboard_camera_video_stream_source_wide)) {
+                        command.videoStreamSource = CameraVideoStreamSource.WIDE;
+                    }
+                    else if (item.getTitle() == getString(com.dronelink.core.ui.R.string.DJIDashboard_camera_video_stream_source_zoom)) {
+                        command.videoStreamSource = CameraVideoStreamSource.ZOOM;
+                    }
+                    else {
+                        command.videoStreamSource = CameraVideoStreamSource.THERMAL;
+                    }
+
+                    try {
+                        sessionLocal.addCommand(command);
+                    } catch (final Dronelink.UnregisteredException | DroneSession.CommandTypeUnhandledException ignored) {}
+                    return true;
+                }
+            });
+
+            actionSheet.show();
+            return;
+        }
+
+        actionSheet.getMenu().add(com.dronelink.core.ui.R.string.DJIDashboard_camera_display_mode_visible);
+        actionSheet.getMenu().add(com.dronelink.core.ui.R.string.DJIDashboard_camera_display_mode_thermal);
+        actionSheet.getMenu().add(com.dronelink.core.ui.R.string.DJIDashboard_camera_display_mode_both);
+
+        actionSheet.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(final MenuItem item) {
+                final DisplayModeCameraCommand command = new DisplayModeCameraCommand();
+                command.lensIndex = lenses.size() - 1;
+                if (item.getTitle() == getString(com.dronelink.core.ui.R.string.DJIDashboard_camera_display_mode_thermal)) {
+                    command.displayMode = CameraDisplayMode.THERMAL;
+                }
+                else if (item.getTitle() == getString(com.dronelink.core.ui.R.string.DJIDashboard_camera_display_mode_both)) {
+                    command.displayMode = CameraDisplayMode.PIP;
+                }
+
+                try {
+                    sessionLocal.addCommand(command);
+                } catch (final Dronelink.UnregisteredException | DroneSession.CommandTypeUnhandledException ignored) {}
+                return true;
+            }
+        });
+
+        actionSheet.show();
+    }
+
     @Override
     public void onRegistered(final String error) {}
 
@@ -410,12 +514,33 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     public void onOpened(final DroneSession session) {
         session.addListener(this);
         this.session = session;
+
+        checkDisplayMode(session);
+    }
+
+    private void checkDisplayMode(final DroneSession session) {
+        if (session.isClosed()) {
+            return;
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cameraDisplayModeButton.setVisibility(session.getModel() == dji.common.product.Model.MATRICE_300_RTK.getDisplayName() || session.getModel() == dji.common.product.Model.MAVIC_2_ENTERPRISE_ADVANCED.getDisplayName() ? View.VISIBLE : View.INVISIBLE);
+            }
+        });
     }
 
     @Override
     public void onClosed(final DroneSession session) {
         session.removeListener(this);
         this.session = null;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cameraDisplayModeButton.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override
@@ -457,6 +582,9 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
     @Override
     public void onCameraFileGenerated(final DroneSession session, final CameraFile file) {}
+
+    @Override
+    public void onVideoFeedSourceUpdated(final DroneSession session, final Integer channel) {}
 
     @Override
     public void onMissionEstimating(final MissionExecutor executor) {}

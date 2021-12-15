@@ -23,12 +23,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                custom:videoSource="primary" />
+                custom:videoSource="auto" />
 
             <dji.ux.widget.FPVOverlayWidget
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                custom:overlayVideoSource="primary" />
+                custom:overlayVideoSource="auto" />
 
             <dji.ux.workflow.CompassCalibratingWorkFlow
                 android:layout_width="match_parent"
@@ -275,6 +275,18 @@
             android:layout_marginRight="8dp"
             android:layout_centerVertical="true"
             tools:ignore="RtlHardcoded"/>
+
+        <ImageButton
+            android:id="@+id/cameraDisplayModeButton"
+            android:background="@drawable/ic_baseline_switch_camera_24"
+            android:layout_alignTop="@id/CameraCapturePanel"
+            android:layout_toLeftOf="@id/CameraCapturePanel"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:scaleType="fitCenter"
+            android:visibility="invisible" />
 
         <ImageButton
             android:id="@+id/offsetsButton"
