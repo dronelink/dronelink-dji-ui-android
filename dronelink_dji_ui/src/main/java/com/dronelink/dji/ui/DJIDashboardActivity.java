@@ -16,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,17 +46,11 @@ import com.dronelink.core.kernel.core.enums.CameraVideoStreamSource;
 import com.dronelink.core.ui.DroneOffsetsFragment;
 import com.dronelink.core.ui.MapboxMapFragment;
 import com.dronelink.core.ui.MicrosoftMapFragment;
-import com.dronelink.dji.DJIVirtualStickSession;
 import com.dronelink.dji.adapters.DJICameraAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import dji.common.camera.SettingsDefinitions;
-import dji.common.error.DJIError;
-import dji.common.product.Model;
-import dji.common.util.CommonCallbacks;
-import dji.midware.usb.P3.UsbAccessoryService;
 import dji.sdk.camera.Lens;
 import dji.ux.widget.FPVWidget;
 
@@ -280,14 +272,14 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     public void onStart() {
         super.onStart();
         Dronelink.getInstance().addListener(this);
-        Dronelink.getInstance().getSessionManager().addListener(this);
+        Dronelink.getInstance().getTargetDroneSessionManager().addListener(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         Dronelink.getInstance().removeListener(this);
-        Dronelink.getInstance().getSessionManager().removeListener(this);
+        Dronelink.getInstance().getTargetDroneSessionManager().removeListener(this);
         if (session != null) {
             session.removeListener(this);
         }
@@ -451,6 +443,9 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
 
     @Override
     public void onRegistered(final String error) {}
+
+    @Override
+    public void onDroneSessionManagerAdded(final DroneSessionManager manager) {}
 
     @Override
     public void onMissionLoaded(final MissionExecutor executor) {
