@@ -452,9 +452,6 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     public void onRegistered(final String error) {}
 
     @Override
-    public void onDroneSessionManagerAdded(final DroneSessionManager manager) {}
-
-    @Override
     public void onMissionLoaded(final MissionExecutor executor) {
         executor.addListener(this);
         this.missionExecutor = executor;
