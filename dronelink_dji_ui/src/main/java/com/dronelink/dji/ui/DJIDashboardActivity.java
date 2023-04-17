@@ -77,7 +77,7 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
         super.onCreate(savedInstanceState);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.black));
+            getWindow().setNavigationBarColor(getResources().getColor(dji.ux.R.color.black));
         }
 
         setContentView(R.layout.activity_dji_dashboard);
