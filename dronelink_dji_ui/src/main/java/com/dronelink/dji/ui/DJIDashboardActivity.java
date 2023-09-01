@@ -449,6 +449,9 @@ public class DJIDashboardActivity extends AppCompatActivity implements Dronelink
     }
 
     @Override
+    public void onDroneSessionManagerAdded(final DroneSessionManager droneSessionManager) {}
+
+    @Override
     public void onRegistered(final String error) {}
 
     @Override
