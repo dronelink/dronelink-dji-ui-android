@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../private/dronelink-core-android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../dronelink-core-ui-android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../dronelink-dji-android" vcs="Git" />
   </component>
 </project>
